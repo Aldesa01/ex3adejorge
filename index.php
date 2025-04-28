@@ -74,7 +74,7 @@ require_once 'autoload.php';
     <?php
         $lightning = new Lightning();
         $lightning->drawLampsList();
-        $lightning->getPotenciaZona();
+        $lightning->drawPotenciaZona();
     ?>
     
 </body>

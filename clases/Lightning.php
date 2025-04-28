@@ -53,14 +53,25 @@ class Lightning extends Connection {
                 else { echo "<div class='element off'><h4><img src='img/bulb-icon-off.png'>". $name ."</h4><h1>". $wattage ."W.</h1><h4>". $zone ."</h4></div>"; }
             }
         }
-        
-        public function getPotenciaZona() {
-            $sql = "SELECT SUM(lamp_models.model_wattage) as power FROM
-            `lamps` INNER JOIN lamp_models on
-            lamp_model=lamp_models.model_id WHERE lamp_on = 1 ;";
-            $stmt = $this->getConn()->query($sql);
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            echo "<div class='center'>Esta es la potencia total: ". $result['power'] ."W.</div>";
+
+    public function getPotenciaZona() {
+        $sql = "SELECT SUM(lamp_models.model_wattage) as power, zone_name FROM
+        lamps INNER JOIN lamp_models on
+        lamp_model=lamp_models.model_id INNER JOIN zones on 
+        lamps.lamp_zone = zones.zone_id WHERE lamps.lamp_on = 1
+        GROUP BY zone_id, zone_name;";
+        $stmt = $this->getConn()->query($sql);
+        $powers = [];
+        while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $powers[$result['zone_name']] = $result['power'];
         }
+        return $powers;
+    }
+        public function drawPotenciaZona(){
+            $power = $this->getPotenciaZona();
+            foreach ($power as $zone => $powers){
+            echo "<div class='center'><h4>". $zone .": ". $powers ."W.</h4></div>" ;
+            }
+}
 }
 ?>
