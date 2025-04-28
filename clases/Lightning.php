@@ -54,6 +54,15 @@ class Lightning extends Connection {
             }
         }
 
+    //    public function getPotenciaZona() {
+    //        $sql = "SELECT SUM(lamp_models.model_wattage) as power FROM
+    //        `lamps` INNER JOIN lamp_models on
+    //        lamp_model=lamp_models.model_id WHERE lamp_on = 1 ;";
+    //        $stmt = $this->getConn()->query($sql);
+    //        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    //        echo "<div class='center'>Esta es la potencia total: ". $result['power'] ."W.</div>";
+    //    }
+
     public function getPotenciaZona() {
         $sql = "SELECT SUM(lamp_models.model_wattage) as power, zone_name FROM
         lamps INNER JOIN lamp_models on
